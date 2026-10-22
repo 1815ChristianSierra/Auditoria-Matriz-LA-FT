@@ -1,0 +1,302 @@
+/* =========================================================
+   Matriz LA/FT - Análisis de sensibilidad (sensibilidad/index)
+   Mismo estilo que el tablero (usa las variables de layout.css)
+   ========================================================= */
+
+/* ---------- Colores por banda ---------- */
+.band--bajo    { --band-solid: #10b981; --band-text: #6ee7b7; --band-bg: rgba(16, 185, 129, .15); --band-border: rgba(16, 185, 129, .45); }
+.band--medio   { --band-solid: #eab308; --band-text: #fde047; --band-bg: rgba(234, 179, 8, .15);  --band-border: rgba(234, 179, 8, .45); }
+.band--alto    { --band-solid: #f97316; --band-text: #fdba74; --band-bg: rgba(249, 115, 22, .15); --band-border: rgba(249, 115, 22, .45); }
+.band--critico { --band-solid: #f43f5e; --band-text: #fda4af; --band-bg: rgba(244, 63, 94, .15);  --band-border: rgba(244, 63, 94, .5); }
+
+/* ---------- Encabezado de página ---------- */
+.page-header {
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.5rem 0.625rem;
+    border-bottom: 1px solid var(--divider);
+}
+.breadcrumb { margin-bottom: 0.125rem; font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+.breadcrumb ol { display: flex; align-items: center; gap: 0.375rem; list-style: none; }
+.breadcrumb__sep { color: #475569; }
+.breadcrumb__current { color: var(--blue-400); font-weight: 600; }
+.page-title { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.025em; color: #fff; }
+.page-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+/* Botones (mismo estilo del tablero) */
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid #1b3d6a;
+    border-radius: 0.5rem;
+    background: var(--card);
+    color: var(--text);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+    transition: background .15s, color .15s;
+}
+.btn-secondary:hover:not(:disabled) { background: var(--card-hover); color: #fff; }
+.btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, .5); }
+.btn-secondary:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+.btn-ghost:hover { background: var(--card); color: #fff; }
+
+/* ---------- Contenedor ---------- */
+.page-body { flex: 1 0 auto; display: flex; flex-direction: column; gap: 0.75rem; padding: 0.75rem 1.5rem; }
+
+/* Aviso */
+.info-banner {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface);
+    font-size: 0.75rem;
+    color: var(--text-soft);
+}
+.info-banner svg { width: 1.125rem; height: 1.125rem; flex-shrink: 0; color: var(--blue-400); }
+
+/* Filtros */
+.filters { flex: none; display: flex; flex-wrap: wrap; gap: 1rem; }
+.filters__item { width: 100%; max-width: 18rem; }
+.field-label { display: block; margin-bottom: 0.375rem; font-size: 11px; font-weight: 600; letter-spacing: 0.025em; text-transform: uppercase; color: var(--muted); }
+.control {
+    width: 100%;
+    padding: 0.4375rem 0.75rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.5rem;
+    background: var(--input-bg);
+    color: #f1f5f9;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color-scheme: dark;
+    cursor: pointer;
+}
+.control:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
+
+/* ---------- Grilla ---------- */
+.layout { display: grid; grid-template-columns: 1fr; gap: 0.75rem; align-items: start; }
+@media (min-width: 1024px) { .layout { grid-template-columns: 1fr 1fr; } }
+.col { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
+
+/* ---------- Panel ---------- */
+.panel {
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+}
+.panel__head { flex: none; padding: 0.625rem 1rem; border-bottom: 1px solid var(--border); }
+.panel__title { font-size: 0.875rem; font-weight: 600; letter-spacing: -0.025em; color: #fff; }
+.panel__foot { flex: none; padding: 0.625rem 1rem; border-top: 1px solid var(--divider); }
+
+/* ---------- Pesos ---------- */
+.weights { padding: 0.75rem 1rem; }
+.weights__head,
+.weights__row { display: grid; grid-template-columns: 3fr 2fr 5fr 2fr; align-items: center; padding: 0 0.25rem; }
+.weights__head {
+    margin-bottom: 0.625rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--divider);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.weights__rows { display: flex; flex-direction: column; gap: 0.75rem; }
+.weights__name { font-size: 0.8125rem; font-weight: 500; color: #f1f5f9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.weights__base { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--muted); }
+.weights__slider { padding: 0 0.75rem; }
+.col-center { text-align: center; }
+.col-right { text-align: right; }
+
+.sim {
+    display: inline-block;
+    width: 3.5rem;
+    padding: 0.25rem 0;
+    border: 1px solid var(--input-border);
+    border-radius: 0.25rem;
+    background: var(--input-bg);
+    color: var(--blue-300);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Deslizador */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 0.375rem;
+    border: 1px solid var(--row-divider);
+    border-radius: 9999px;
+    background: var(--input-bg);
+    cursor: pointer;
+    outline: none;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.9375rem;
+    height: 0.9375rem;
+    border: 2px solid var(--blue-300);
+    border-radius: 9999px;
+    background: #2563eb;
+}
+.slider::-moz-range-thumb {
+    width: 0.8125rem;
+    height: 0.8125rem;
+    border: 2px solid var(--blue-300);
+    border-radius: 9999px;
+    background: #2563eb;
+}
+.slider:focus-visible { box-shadow: 0 0 0 2px rgba(59, 130, 246, .5); }
+
+/* Suma de pesos */
+.sum {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.sum--ok  { background: rgba(16, 185, 129, .15); border-color: rgba(16, 185, 129, .45); color: #6ee7b7; }
+.sum--bad { background: rgba(244, 63, 94, .15);  border-color: rgba(244, 63, 94, .5);   color: #fda4af; }
+
+/* ---------- Tabla de ranking ---------- */
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.75rem; }
+.table thead tr {
+    background: var(--input-bg);
+    border-bottom: 1px solid var(--divider);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.table th { padding: 0.5rem 0.75rem; font-weight: 600; white-space: nowrap; }
+.table tbody tr { border-bottom: 1px solid var(--row-divider); color: var(--text-soft); transition: background .15s; }
+.table tbody tr:last-child { border-bottom: 0; }
+.table tbody tr:hover { background: rgba(12, 34, 60, .6); }
+.table td { padding: 0.5rem 0.75rem; }
+.table .col-event { font-weight: 600; color: #f1f5f9; }
+.table .col-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.table .col-sim { font-weight: 700; color: #fff; }
+.table .delta { font-weight: 600; color: var(--muted); }
+.table .delta--up { color: #fbbf24; }
+.table .delta--down { color: var(--blue-400); }
+
+.badge {
+    display: inline-block;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--band-border);
+    border-radius: 9999px;
+    background: var(--band-bg);
+    color: var(--band-text);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------- KPIs ---------- */
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+.kpi {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+}
+.kpi__label { font-size: 0.75rem; font-weight: 600; color: var(--muted); }
+.kpi__value { margin-top: 0.5rem; font-size: 2rem; line-height: 1; font-weight: 700; letter-spacing: -0.025em; color: #fff; }
+.kpi__value--warn { color: #fbbf24; }
+
+/* ---------- Limitaciones ---------- */
+.limits { flex: none; padding: 0.75rem 1rem; }
+.limits__title { margin-bottom: 0.625rem; font-size: 0.875rem; font-weight: 600; letter-spacing: -0.025em; color: #fff; }
+.limits__list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.limits__item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.75rem; color: var(--text-soft); }
+.limits__icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #3b82f6;
+    border-radius: 0.25rem;
+    background: rgba(37, 99, 235, .2);
+    color: var(--blue-400);
+}
+.limits__icon svg { width: 0.75rem; height: 0.75rem; }
+
+/* Encabezado igual al de las demás pantallas */
+.page-header { padding: 1rem 1.5rem 0.75rem; }
+.breadcrumb { margin-bottom: 0.25rem; }
+.page-title { font-size: 1.375rem; }
+
+/* =========================================================
+   Nada crece empujando a otra tarjeta: lo que sobra se desplaza por dentro (sin barra visible)
+   ========================================================= */
+.alert { padding: 0.5rem 0.875rem; border: 1px solid; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 500; line-height: 1.4; }
+.alert--error { border-color: rgba(244, 63, 94, .5); background: rgba(244, 63, 94, .12); color: #fda4af; }
+.page-body > .alert { flex: none; }
+.btn-secondary:disabled { opacity: .5; cursor: not-allowed; }
+.empty-note { padding: 1rem; color: var(--muted); font-size: 0.75rem; }
+
+/* El formulario de los pesos no genera caja: el panel sigue siendo el que se acomoda en la grilla */
+.weights-form { display: contents; }
+
+/* Pantallas bajas o angostas: alturas máximas para que nada empuje */
+.weights { max-height: 26rem; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.weights::-webkit-scrollbar { display: none; }
+.table-wrap { max-height: 22rem; overflow: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.table-wrap::-webkit-scrollbar { display: none; }
+.table thead th { position: sticky; top: 0; z-index: 1; background: var(--input-bg); box-shadow: inset 0 -1px 0 var(--divider); }
+
+@media (min-width: 1024px) and (min-height: 700px) {
+    .app-content { overflow: hidden; }
+    .page-body { flex: 1 1 0; min-height: 0; }
+    .layout { flex: 1 1 0; min-height: 0; grid-template-rows: minmax(0, 1fr); align-items: stretch; }
+
+    /* Pesos: la lista de factores se recorre por dentro */
+    .weights-form > .panel { height: 100%; display: flex; flex-direction: column; min-height: 0; }
+    .weights { flex: 1 1 0; min-height: 0; max-height: none; }
+
+    /* Ranking: la tabla se recorre por dentro y las tarjetas de abajo no se mueven */
+    .col { min-height: 0; }
+    .col > .panel--ranking { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; }
+    .col > .panel--ranking .table-wrap { flex: 1 1 0; min-height: 0; max-height: none; }
+    .kpis { flex: none; }
+}
+ 

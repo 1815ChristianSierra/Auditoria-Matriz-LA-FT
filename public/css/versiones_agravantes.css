@@ -1,0 +1,183 @@
+/* =========================================================
+   Matriz LA/FT - Editar versión · pestaña Agravantes (versiones/tabs/agravantes)
+   Se carga junto con versiones-edit.css (usa sus clases .panel, .panel__head, .tag, .control)
+   y las variables de layout.css.
+   ========================================================= */
+
+/* ---------- Contenedor (con scroll interno sin barra visible) ---------- */
+.vag-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.vag-wrap::-webkit-scrollbar { display: none; }
+.vag-wrap > * { flex: none; }
+
+/* ---------- Tabla de agravantes ---------- */
+.vag-meta { display: flex; align-items: center; gap: 0.625rem; font-size: 0.75rem; color: var(--muted); }
+.vag-meta strong { font-family: var(--font-mono); font-weight: 600; color: #fff; }
+.vag-meta .sep { color: #475569; }
+.vag-meta .impact { font-family: var(--font-mono); font-weight: 600; color: #fcd34d; }
+.panel__title small { font-size: 0.75rem; font-weight: 400; color: var(--muted); }
+
+.vag-table { width: 100%; table-layout: fixed; border-collapse: collapse; text-align: left; font-size: 0.75rem; }
+.vag-table th {
+    padding: 0.4375rem 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: var(--input-bg);
+    box-shadow: inset 0 -1px 0 var(--divider);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.vag-table td { padding: 0.375rem 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vag-table tbody tr { border-bottom: 1px solid var(--row-divider); color: var(--text-soft); transition: background .15s, opacity .15s; }
+.vag-table tbody tr:last-child { border-bottom: 0; }
+.vag-table tbody tr:hover { background: rgba(12, 34, 60, .6); }
+.vag-table .w-inc  { width: 9%; }
+.vag-table .w-cod  { width: 12%; }
+.vag-table .w-nom  { width: 28%; }
+.vag-table .w-desc { width: 37%; }
+.vag-table .w-pts  { width: 14%; }
+.vag-table .col-center { text-align: center; }
+.vag-table .col-name { font-weight: 500; color: #f1f5f9; }
+.vag-table .col-desc { color: var(--text-soft); }
+
+.vag-check { width: 1rem; height: 1rem; accent-color: #2563eb; cursor: pointer; vertical-align: middle; }
+
+.vag-chip {
+    display: inline-block;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.25rem;
+    background: var(--input-bg);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.vag-points {
+    width: 4.5rem;
+    padding: 0.25rem 0.375rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Agravante excluido de esta versión: la fila se atenúa */
+.vag-table tbody tr.is-off { opacity: 0.55; }
+.vag-table tbody tr.is-off .vag-points { cursor: not-allowed; }
+
+/* ---------- Tarjetas inferiores ---------- */
+.vag-cards { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+@media (min-width: 1024px) { .vag-cards { grid-template-columns: 1fr 1fr; } }
+.vag-card { display: flex; flex-direction: column; }
+.vag-card__body { flex: 1 1 auto; padding: 0.75rem 1rem; }
+.vag-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid var(--divider);
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+.panel__title--caps { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.vag-live { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #6ee7b7; }
+
+/* Tope */
+.vag-cap { display: flex; align-items: flex-start; gap: 1.25rem; }
+.vag-cap__num { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.vag-cap__num strong { font-size: 2.5rem; line-height: 1; font-weight: 700; letter-spacing: -0.025em; color: #fff; }
+.vag-cap__num span { margin-top: 0.375rem; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); }
+.vag-cap__text p { font-size: 0.8125rem; line-height: 1.4; color: var(--text); }
+.vag-cap__text p strong { font-weight: 600; color: #fff; }
+.vag-cap__text p + p { margin-top: 0.375rem; font-size: 0.75rem; color: var(--muted); }
+
+.vag-link { padding: 0; border: 0; background: none; display: inline-flex; align-items: center; gap: 0.375rem; font: inherit; font-size: 0.75rem; font-weight: 500; color: var(--blue-400); cursor: pointer; transition: color .15s; }
+.vag-link:hover { color: var(--blue-300); }
+.vag-link svg { width: 0.9375rem; height: 0.9375rem; }
+.vag-rule { font-family: var(--font-mono); font-size: 11px; color: var(--muted-dark); }
+
+/* Ejemplo */
+.vag-sim { display: flex; flex-direction: column; gap: 0.5rem; }
+.vag-sim__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--row-divider);
+    border-radius: 0.5rem;
+    background: var(--input-bg);
+}
+.vag-sim__left { display: flex; align-items: center; gap: 0.625rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text); }
+.vag-sim__left::before { content: ''; width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: #34d399; }
+.vag-sim__row.is-capped .vag-sim__left::before { background: #fbbf24; }
+.vag-sim__right { display: flex; align-items: center; gap: 0.5rem; font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.vag-sim__result {
+    padding: 0.125rem 0.625rem;
+    border: 1px solid rgba(16, 185, 129, .4);
+    border-radius: 0.25rem;
+    background: rgba(16, 185, 129, .15);
+    color: #6ee7b7;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+}
+.vag-sim__row.is-capped .vag-sim__result { border-color: rgba(245, 158, 11, .45); background: rgba(245, 158, 11, .15); color: #fcd34d; }
+.vag-formula code { font-family: var(--font-mono); font-weight: 600; color: var(--text-soft); }
+.vag-ok { display: inline-flex; align-items: center; gap: 0.375rem; font-weight: 500; color: #6ee7b7; }
+.vag-ok::before { content: ''; width: 0.375rem; height: 0.375rem; border-radius: 9999px; background: #34d399; }
+.vag-ok.is-warn { color: #fcd34d; }
+.vag-ok.is-warn::before { background: #fbbf24; }
+
+/* ---------- Aviso: administración de catálogos ---------- */
+.vag-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+}
+.vag-info__icon {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(59, 130, 246, .4);
+    border-radius: 0.5rem;
+    background: rgba(37, 99, 235, .25);
+    color: var(--blue-300);
+}
+.vag-info__icon svg { width: 1.125rem; height: 1.125rem; }
+.vag-info strong { display: block; font-size: 0.8125rem; font-weight: 600; color: #fff; }
+.vag-info p { font-size: 0.75rem; line-height: 1.5; color: var(--muted); }
+.vag-info a { font-weight: 500; color: var(--blue-400); }
+.vag-info a:hover { text-decoration: underline; }
+
+/* ---------- Ajuste a pantalla (scroll interno sin barra visible) ---------- */
+@media (min-width: 1024px) and (min-height: 600px) {
+    .vag-wrap { flex: 1 1 0; min-height: 0; overflow-y: auto; }
+}
+ 

@@ -1,0 +1,140 @@
+/* =========================================================
+   Matriz LA/FT - Catálogos · pestaña Agravantes (catalogos/tabs/agravantes)
+   Se carga junto con catalogos.css y usa SUS MISMOS tonos
+   (igual que la pestaña Factores).
+   ========================================================= */
+
+/* ---------- Barra superior de la tabla ---------- */
+.agr-toolbar {
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.agr-toolbar__left { display: flex; align-items: center; gap: 0.5rem; }
+.agr-toolbar__title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text); }
+.agr-toolbar__dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; background: var(--blue-400); }
+.agr-toolbar__sub { font-size: 0.75rem; color: var(--muted); }
+.agr-toolbar__right { display: flex; align-items: center; gap: 0.75rem; }
+.agr-toolbar__count { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+.agr-active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.25rem;
+    background: var(--input-bg);
+}
+.agr-active-chip span:first-child { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.agr-active-chip span:last-child { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: #6ee7b7; }
+
+/* ---------- Tabla (mismo texto y colores que la tabla de Controles) ---------- */
+.table .agr-w-cod  { width: 14%; }
+.table .agr-w-nom  { width: 30%; }
+.table .agr-w-desc { width: 44%; }
+.table .agr-w-act  { width: 12%; }
+.table .col-right  { text-align: right; }
+.table .col-desc   { color: var(--text-soft); }
+
+.agr-chip {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.25rem;
+    background: var(--input-bg);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+/* Agravante inactivo: la fila se atenúa */
+.table tbody tr.is-off { opacity: 0.8; }
+.table tbody tr.is-off .col-name { color: var(--text-soft); }
+.table tbody tr.is-off .col-desc { color: var(--muted); }
+
+/* Fila recién agregada */
+.agr-new { animation: agr-flash 1.4s ease-out; }
+@keyframes agr-flash {
+    from { background: rgba(12, 34, 60, .9); }
+    to   { background: transparent; }
+}
+
+/* ---------- Formulario "Nuevo agravante" (mismo encabezado que "Nuevo control") ---------- */
+.agr-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.agr-head__title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text); }
+.agr-head__tag { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-dark); }
+
+.agr-body { display: grid; grid-template-columns: 1fr; gap: 0.75rem; padding: 0.75rem 1rem; align-items: start; }
+@media (min-width: 1024px) { .agr-body { grid-template-columns: 7fr 5fr; } }
+
+.agr-form { display: flex; flex-direction: column; gap: 0.625rem; }
+.agr-fields { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+@media (min-width: 640px) { .agr-fields { grid-template-columns: 1fr 2fr; } }
+
+.agr-label { display: block; margin-bottom: 0.25rem; font-size: 11px; font-weight: 600; letter-spacing: 0.025em; text-transform: uppercase; color: var(--muted); }
+.agr-label .required { color: #f87171; }
+.agr-form.was-validated .control:invalid { border-color: rgba(239, 68, 68, .7); }
+
+.agr-actions { display: flex; align-items: center; gap: 0.75rem; padding-top: 0.25rem; }
+.agr-actions .btn-secondary svg { width: 1rem; height: 1rem; margin-right: 0.375rem; color: var(--muted); }
+
+/* ---------- Columna derecha: nota amarilla + medidor ---------- */
+.agr-side { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
+
+/* Misma nota amarilla que en catalogos.css, en formato tarjeta */
+.agr-note {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid rgba(234, 179, 8, .3);
+    border-left: 4px solid #facc15;
+    border-radius: 0.5rem;
+    background: linear-gradient(to bottom right, #2c270a, #1e1a06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .3);
+    color: rgba(254, 249, 195, .9);
+}
+.agr-note__title { display: flex; align-items: center; gap: 0.5rem; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fde047; }
+.agr-note__title svg { width: 1rem; height: 1rem; flex-shrink: 0; color: #facc15; }
+.agr-note p { font-size: 11px; font-weight: 500; line-height: 1.5; }
+.agr-note p strong { font-weight: 600; color: #fde047; text-decoration: underline; text-decoration-color: rgba(250, 204, 21, .5); text-underline-offset: 2px; }
+.agr-note__foot { margin-top: 0.125rem; padding-top: 0.375rem; border-top: 1px solid rgba(250, 204, 21, .2); font-family: var(--font-mono); font-size: 10px; color: rgba(254, 249, 195, .7); }
+
+/* Medidor: mismo fondo y borde que los paneles; verde del interruptor y de los badges */
+.agr-meter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-alt);
+}
+.agr-meter__row { display: flex; align-items: center; justify-content: space-between; }
+.agr-meter__label { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.agr-meter__value { font-family: var(--font-mono); font-size: 0.875rem; font-weight: 700; color: #6ee7b7; }
+.agr-bar { display: flex; gap: 0.375rem; height: 0.5rem; }
+.agr-bar span { flex: 1 1 0; border-radius: 0.125rem; background: #059669; }
+.agr-bar span.is-off { background: #334155; }
+.agr-meter__foot { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); }
+.agr-meter__state { font-family: var(--font-mono); color: #6ee7b7; }
+.agr-meter__state.is-warn { color: #fcd34d; }
+ 

@@ -1,0 +1,136 @@
+/* =========================================================
+   Matriz LA/FT - Modal "Nueva versión (clonar)"
+   Usa las variables de layout.css (mismos colores del resto)
+   ========================================================= */
+
+/* Fondo oscuro + desenfoque de la pantalla de atrás */
+.vm {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    overflow-y: auto;
+    background: rgba(2, 10, 22, 0.72);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.vm::-webkit-scrollbar { display: none; }
+.vm.is-open { display: flex; }
+
+/* Tarjeta */
+.vm__card {
+    width: 100%;
+    max-width: 32rem;
+    margin: auto;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, .6);
+}
+.vm__header,
+.vm__footer {
+    display: flex;
+    align-items: center;
+    padding: 0.875rem 1.25rem;
+    background: var(--surface-alt);
+}
+.vm__header { justify-content: space-between; border-bottom: 1px solid var(--border); }
+.vm__footer { justify-content: flex-end; gap: 0.75rem; border-top: 1px solid var(--border); }
+
+.vm__title { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; font-weight: 600; letter-spacing: -0.025em; color: #fff; }
+.vm__title svg { width: 1.25rem; height: 1.25rem; color: var(--blue-400); }
+
+.vm__close {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+.vm__close:hover { background: var(--card); color: #fff; }
+.vm__close svg { width: 1.25rem; height: 1.25rem; }
+
+/* Cuerpo */
+.vm__body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.875rem; }
+.vm__row { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+@media (min-width: 480px) { .vm__row { grid-template-columns: 1fr 1fr; } }
+
+.vm__label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.vm__required { color: #f87171; }
+
+.vm__control {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.5rem;
+    background: var(--input-bg);
+    color: #f1f5f9;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: inherit;
+    color-scheme: dark;
+}
+select.vm__control { cursor: pointer; }
+.vm__control:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
+.vm__control::placeholder { color: var(--muted-dark); font-weight: 400; }
+.vm__control--mono { font-family: var(--font-mono); }
+.vm__control--readonly { background: var(--surface-alt); color: var(--muted); cursor: not-allowed; }
+.vm__control--textarea { min-height: 6rem; resize: none; line-height: 1.5; cursor: text; }
+.vm__form.was-validated .vm__control:invalid { border-color: rgba(239, 68, 68, .7); }
+
+/* Aviso informativo */
+.vm__info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid rgba(59, 130, 246, .35);
+    border-radius: 0.5rem;
+    background: rgba(37, 99, 235, .12);
+    color: var(--text-soft);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+.vm__info svg { width: 1.125rem; height: 1.125rem; flex-shrink: 0; margin-top: 0.0625rem; color: var(--blue-400); }
+
+/* Botones */
+.vm__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+.vm__btn svg { width: 1rem; height: 1rem; }
+.vm__btn--ghost { background: transparent; color: var(--muted); }
+.vm__btn--ghost:hover { background: var(--card); color: #fff; }
+.vm__btn--primary { border-color: #1b3d6a; background: var(--card); color: var(--text); box-shadow: 0 1px 2px rgba(0, 0, 0, .2); }
+.vm__btn--primary:hover { background: var(--card-hover); color: #fff; }
+.vm__btn--primary svg { color: var(--muted); }
+.vm__btn:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, .5); }
+ 

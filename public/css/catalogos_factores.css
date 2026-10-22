@@ -1,0 +1,133 @@
+/* =========================================================
+   Matriz LA/FT - Catálogos · pestaña Factores (catalogos/tabs/factores)
+   Se carga junto con catalogos.css y usa SUS MISMOS tonos:
+   encabezados de panel, códigos, texto de tabla, interruptor y nota amarilla.
+   ========================================================= */
+
+/* ---------- Barra superior de la tabla (mismo estilo que .panel__title de catalogos.css) ---------- */
+.fct-toolbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.fct-toolbar__left { display: flex; align-items: center; gap: 0.5rem; }
+.fct-toolbar__title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text); }
+.fct-toolbar__dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; background: var(--blue-400); }
+.fct-toolbar__sub { font-size: 0.75rem; color: var(--muted); }
+.fct-toolbar__count { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+
+/* ---------- Tabla (mismo texto y colores que la tabla de Controles) ---------- */
+.table .fct-w-cod  { width: 20%; }
+.table .fct-w-nom  { width: 22%; }
+.table .fct-w-desc { width: 46%; }
+.table .fct-w-act  { width: 12%; }
+.table .col-right  { text-align: right; }
+.table .col-desc   { color: var(--text-soft); }   /* igual que el resto de las celdas de la tabla */
+
+/* Código: mismo blanco y mismo tipo de letra que .col-code de Controles, sobre una etiqueta neutra */
+.fct-chip {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--input-border);
+    border-radius: 0.25rem;
+    background: var(--input-bg);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+/* Fila recién agregada */
+.fct-new { animation: fct-flash 1.4s ease-out; }
+@keyframes fct-flash {
+    from { background: rgba(12, 34, 60, .9); }
+    to   { background: transparent; }
+}
+
+/* ---------- Formulario "Nuevo factor" (mismo encabezado que "Nuevo control") ---------- */
+.fct-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+.fct-head__title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text); }
+.fct-head__tag { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted-dark); }
+
+.fct-body { display: grid; grid-template-columns: 1fr; gap: 0.75rem; padding: 0.75rem 1rem; align-items: start; }
+@media (min-width: 1024px) { .fct-body { grid-template-columns: 8fr 4fr; } }
+
+.fct-form { display: flex; flex-direction: column; gap: 0.625rem; }
+.fct-fields { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+@media (min-width: 640px) { .fct-fields { grid-template-columns: 1fr 1fr; } }
+
+.fct-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; font-size: 11px; font-weight: 600; letter-spacing: 0.025em; text-transform: uppercase; color: var(--muted); }
+.fct-label small { font-size: 10px; font-weight: 400; letter-spacing: 0; text-transform: lowercase; color: var(--muted-dark); }
+.fct-label .required { color: #f87171; }
+
+.fct-upper { text-transform: uppercase; }
+.fct-upper::placeholder { text-transform: none; }
+.fct-form.was-validated .control:invalid { border-color: rgba(239, 68, 68, .7); }
+
+.fct-actions { display: flex; align-items: center; gap: 0.75rem; padding-top: 0.25rem; }
+.fct-actions .btn-secondary svg { width: 1rem; height: 1rem; margin-right: 0.375rem; color: var(--muted); }
+
+/* ---------- Columna derecha: nota amarilla + contador ---------- */
+.fct-side { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
+
+/* Misma nota amarilla que en catalogos.css, en formato tarjeta */
+.fct-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid rgba(234, 179, 8, .3);
+    border-left: 4px solid #facc15;
+    border-radius: 0.5rem;
+    background: linear-gradient(to bottom right, #2c270a, #1e1a06);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .3);
+    color: rgba(254, 249, 195, .9);
+}
+.fct-note > svg { width: 1rem; height: 1rem; flex-shrink: 0; margin-top: 0.125rem; color: #facc15; }
+.fct-note__title { display: block; margin-bottom: 0.25rem; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fde047; }
+.fct-note p { font-size: 11px; font-weight: 500; line-height: 1.5; }
+.fct-note p strong { font-weight: 600; color: #fde047; }
+.fct-note__foot {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background: rgba(0, 0, 0, .2);
+    font-size: 10px;
+    color: rgba(254, 249, 195, .7);
+}
+.fct-note__foot svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
+
+/* Contador: mismo fondo y borde que los paneles; verde del interruptor y de los badges */
+.fct-counter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-alt);
+}
+.fct-counter__label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+.fct-counter__value { display: block; margin-top: 0.125rem; font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: #6ee7b7; }
+.fct-bars { display: flex; align-items: flex-end; gap: 0.25rem; }
+.fct-bars span { display: block; width: 0.375rem; border-radius: 0.125rem; background: #059669; }
+ 
