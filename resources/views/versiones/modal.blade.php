@@ -75,10 +75,20 @@
                     </div>
                 </div>
 
+                @if(!count($versionesModal))
+                    <p>Defina los umbrales de la primera versión. Bajo comienza en 0; el máximo es 100. El borrador requiere revisión y aprobación.</p>
+                    @foreach(['Medio', 'Alto', 'Crítico'] as $i => $nombre)
+                    <div>
+                        <label class="vm__label" for="umbral-{{ $i }}">Inicio de {{ $nombre }}</label>
+                        <input class="vm__control" type="number" id="umbral-{{ $i }}" name="umbrales[{{ $i }}]" min="0.01" max="100" step="0.01" value="{{ old('umbrales.'.$i) }}" required>
+                    </div>
+                    @endforeach
+                @endif
                 {{-- Clonar desde --}}
                 <div>
                     <label class="vm__label" for="nv-origen">Clonar desde <span class="vm__required">*</span></label>
-                    <select id="nv-origen" name="clonar_desde" class="vm__control" required>
+                    <select id="nv-origen" name="clonar_desde" class="vm__control" @if(count($versionesModal)) required @else disabled @endif>
+                        @if(!count($versionesModal))<option>Primera versión: sin clonación</option>@endif
                         @foreach ($versionesModal as $v)
                             <option value="{{ $v['version'] }}" {{ old('clonar_desde', $clonarDesde) === $v['version'] ? 'selected' : '' }}>{{ $v['version'] }} · {{ strtolower($estadosModal[$v['estado']] ?? $v['estado']) }}</option>
                         @endforeach

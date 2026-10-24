@@ -10,21 +10,7 @@
 <div class="login-layout">
 
     {{-- Nota izquierda --}}
-    <aside class="note note--left">
-        <div class="note__title">
-            <svg class="icon icon--sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-            Nota de acceso
-        </div>
-        <p class="note__text">
-            Cuentas de ejemplo (ficticias):
-            <span class="mono note__user">analista1</span>,
-            <span class="mono note__user">supervisor1</span>,
-            <span class="mono note__user">admin1</span>,
-            <span class="mono note__user">auditor1</span>.
-        </p>
-    </aside>
+
 
     {{-- Tarjeta de login --}}
     <section class="login-card">
@@ -53,7 +39,7 @@
                         id="email"
                         name="email"
                         type="text"
-                        value="{{ old('email', 'analista1@gmail.com') }}"
+                        value="{{ old('email') }}"
                         autocomplete="email"
                         required
                         autofocus>
@@ -72,7 +58,7 @@
                 </label>
                 <div class="field__control">
                     <input
-                        class="field__input field__input--password @error('username') field__input--error @enderror"
+                        class="field__input field__input--password @error('password') field__input--error @enderror"
                         id="password"
                         name="password"
                         type="password"
@@ -96,7 +82,7 @@
                     <input type="checkbox" name="remember" {{ old('remember', true) ? 'checked' : '' }}>
                     <span>Recordar usuario</span>
                 </label>
-                <a class="link" href="#">¿Olvidó su contraseña?</a>
+                <span>Solicite ayuda al administrador para recuperar el acceso.</span>
             </div>
 
             <button type="submit" class="btn-primary">
@@ -118,15 +104,6 @@
         @endif
 
         {{-- Acceso rápido por rol --}}
-        <div class="roles">
-            <span class="roles__label">Acceso según rol</span>
-            <div class="roles__grid">
-                <button type="button" class="role-badge" data-email="analista1@gmail.com">Analista</button>
-                <button type="button" class="role-badge" data-email="supervisor1@gmail.com">Supervisor</button>
-                <button type="button" class="role-badge" data-email="administrador1@gmail.com">Administrador</button>
-                <button type="button" class="role-badge" data-email="auditor1@gmail.com">Auditor</button>
-            </div>
-        </div>
     </section>
 
     {{-- Nota derecha --}}

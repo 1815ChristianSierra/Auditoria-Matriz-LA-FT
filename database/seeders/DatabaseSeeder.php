@@ -14,7 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolSeeder::class,
-            UserSeeder::class,
+
         ]);
+        if (! app()->environment('production')) {
+            $this->call(UserSeeder::class);
+        }
     }
 }

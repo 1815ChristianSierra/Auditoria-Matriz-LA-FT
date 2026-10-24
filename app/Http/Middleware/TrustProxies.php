@@ -14,6 +14,12 @@ class TrustProxies extends Middleware
      */
     protected $proxies;
 
+    public function handle($request, \Closure $next)
+    {
+        $this->proxies = config('deployment.trusted_proxies');
+        return parent::handle($request, $next);
+    }
+
     /**
      * The headers that should be used to detect proxies.
      *

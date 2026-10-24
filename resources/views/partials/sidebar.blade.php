@@ -36,7 +36,7 @@
         <div class="brand">
             <div class="brand__logo">
                 @if (file_exists(public_path('images/logo.png')))
-                    <img src="{{ asset('images/logo.png') }}" alt="Matriz LA/FT">
+                    <img src="{{ asset('images/logo.svg') }}" alt="Matriz LA/FT">
                 @else
                     M
                 @endif

@@ -32,7 +32,7 @@ Route::get('/', function () {
 });
 
 // Pantallas del sistema (requieren sesión iniciada)
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'active', 'operation'])->group(function () {
 
     // Operación
     //Route::view('/dashboard', 'dashboard')->name('dashboard');

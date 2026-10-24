@@ -10,6 +10,10 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        if (app()->environment('production')) {
+            throw new \RuntimeException('Demo users are forbidden in production. Use app:create-admin.');
+        }
+
         $clave = Hash::make('password1815');
         $clave2 = Hash::make('password');
 

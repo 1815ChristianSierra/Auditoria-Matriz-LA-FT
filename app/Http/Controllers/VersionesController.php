@@ -85,10 +85,36 @@ class VersionesController extends Controller
         //dd($request->all());//Valida que la informacion llegue desde la vista
         $request->validate([
             'numero' => ['required', 'string', 'max:10', 'regex:/^v\d+\.\d+$/', 'unique:version_parametros,numero'],
-            'clonar_desde' => 'required|string|exists:version_parametros,numero',
+            'clonar_desde' => VersionParametros::exists() ? 'required|string|exists:version_parametros,numero' : 'nullable',
             'motivo' => 'required|string',
         ]);
 
+        if (! VersionParametros::exists()) {
+            $request->validate([
+                'umbrales' => 'required|array|size:3',
+                'umbrales.0' => 'required|numeric|min:0.01|max:99.98',
+                'umbrales.1' => 'required|numeric|gt:umbrales.0|max:99.99',
+                'umbrales.2' => 'required|numeric|gt:umbrales.1|max:100',
+            ]);
+            $version = DB::transaction(function () use ($request) {
+                $version = VersionParametros::create([
+                    'numero'=>$request->numero, 'motivo'=>$request->motivo,
+                    'proponente_id'=>auth()->id(), 'estado'=>'borrador',
+                ]);
+                $limites = array_merge([0], array_map(fn ($n) => round((float) $n, 2), $request->umbrales), [100.01]);
+                foreach (['Bajo','Medio','Alto','Crítico'] as $i => $nombre) {
+                    Banda::create(['version_id'=>$version->id, 'nombre'=>$nombre, 'orden'=>$i+1,
+                        'desde'=>$limites[$i], 'hasta'=>round($limites[$i+1]-0.01, 2)]);
+                }
+                DB::statement('CALL sp_registrar_bitacora(?, ?, ?, ?, ?, ?, ?, ?, @bitacora_id)', [
+                    auth()->id(), 'CREAR_VERSION', 'version_parametros', $version->id, null,
+                    json_encode(['numero'=>$version->numero]), $request->motivo, null,
+                ]);
+                return $version;
+            });
+            return redirect()->route('versiones.edit', $version->id)
+                ->with('success', 'Primer borrador creado. Configure pesos y escalas antes de proponerlo.');
+        }
         $origen = VersionParametros::where('numero', $request->clonar_desde)->firstOrFail();
 
         try {

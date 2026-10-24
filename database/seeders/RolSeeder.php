@@ -9,7 +9,7 @@ class RolSeeder extends Seeder
 {
     public function run(): void
     {
-        Rol::insert([
+        $roles = [
             [
                 'nombre' => 'administrador',
                 'descripcion' => 'Administra factores, escalas y ponderaciones autorizadas.',
@@ -26,6 +26,9 @@ class RolSeeder extends Seeder
                 'nombre' => 'auditor',
                 'descripcion' => 'Consulta y verifica evidencia (3.ª línea).',
             ],
-        ]);
+        ];
+        foreach ($roles as $role) {
+            Rol::firstOrCreate(['nombre' => $role['nombre']], $role);
+        }
     }
 }

@@ -29,6 +29,14 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+            Route::get('/health', function () {
+                try {
+                    \Illuminate\Support\Facades\DB::select('SELECT 1');
+                    return response()->json(['status' => 'ok']);
+                } catch (\Throwable $e) {
+                    return response()->json(['status' => 'unavailable'], 503);
+                }
+            });
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
