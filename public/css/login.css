@@ -163,6 +163,7 @@ a { text-decoration: none; }
 }
 
 /* ---------- Login: contenedor ---------- */
+/* Móvil: todo apilado y centrado */
 .login-layout {
     width: 100%;
     max-width: 72rem;
@@ -173,18 +174,24 @@ a { text-decoration: none; }
     justify-content: center;
     gap: 1.5rem;
 }
-@media (min-width: 1024px) {
-    .login-layout { flex-direction: row; }
-}
 
 /* Orden en móvil: tarjeta primero */
 .login-card   { order: 1; }
 .note--left   { order: 2; }
 .note--right  { order: 3; }
+
+/* Escritorio: 3 columnas (nota | tarjeta | nota).
+   La tarjeta siempre queda en la columna central, o sea centrada. */
 @media (min-width: 1024px) {
-    .note--left  { order: 1; }
-    .login-card  { order: 2; }
-    .note--right { order: 3; }
+    .login-layout {
+        display: grid;
+        grid-template-columns: 1fr minmax(0, 480px) 1fr;
+        align-items: center;
+        column-gap: 1.5rem;
+    }
+    .note--left  { grid-column: 1; justify-self: end;   order: 0; }
+    .login-card  { grid-column: 2; order: 0; }
+    .note--right { grid-column: 3; justify-self: start; order: 0; }
 }
 
 /* ---------- Notas laterales ---------- */
@@ -204,7 +211,7 @@ a { text-decoration: none; }
 }
 .note:hover { background: rgba(245, 158, 11, 0.15); }
 @media (min-width: 640px)  { .note { font-size: 0.875rem; } }
-@media (min-width: 1024px) { .note { width: 16rem; } }
+@media (min-width: 1024px) { .note { width: 100%; max-width: 16rem; } }
 
 .note__title {
     display: flex;
@@ -345,12 +352,15 @@ a { text-decoration: none; }
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     padding-top: 0.25rem;
     font-size: 0.75rem;
 }
 .checkbox {
     display: inline-flex;
     align-items: center;
+    flex-shrink: 0;
+    white-space: nowrap;
     cursor: pointer;
     user-select: none;
 }
@@ -445,3 +455,4 @@ a { text-decoration: none; }
 .icon { width: 1rem; height: 1rem; flex-shrink: 0; }
 .icon--sm { width: 1rem; height: 1rem; }
 .is-hidden { display: none; }
+ 

@@ -24,6 +24,8 @@
 /* ---------- Encabezado de página ---------- */
 .page-header {
     flex: none;
+    min-width: 0;
+    max-width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
@@ -65,8 +67,34 @@
 .btn-secondary:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
 .btn--sm { padding: 0.25rem 0.75rem; }
 
-/* ---------- Contenedor ---------- */
-.page-body { flex: 1 0 auto; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+/* ---------- Contenedor ----------
+   La columna que contiene el encabezado y el cuerpo mide exactamente la
+   pantalla y no hace scroll. El cuerpo toma lo que sobra y la tabla se
+   desplaza dentro de su panel (ver .panel y .table-wrap). */
+:is(main, div, section, article):has(> .page-body) {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* min-width:0 evita que el contenido ancho (la tabla) agrande la página */
+.page-body {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    max-width: 100%;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;      /* solo si la ventana es muy baja; normalmente no aparece */
+}
+.page-body > * { flex: none; }                           /* avisos, resumen y notas mantienen su alto */
+.page-body > .panel { flex: 1 1 0; min-height: 14rem; }  /* la tabla toma el espacio sobrante */
 
 /* Aviso de solo lectura (evaluación cerrada) */
 .readonly-banner {
@@ -102,7 +130,7 @@
 /* ---------- Ficha de resumen ---------- */
 .summary {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
     padding: 0.75rem;
     border: 1px solid var(--border);
@@ -110,11 +138,12 @@
     background: var(--surface);
     box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 }
-@media (min-width: 640px)  { .summary { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .summary { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px)  { .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .summary { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 .summary__cell {
     min-width: 0;
+    overflow: hidden;
     padding: 0.75rem;
     border: 1px solid #132742;
     border-radius: 0.5rem;
@@ -131,15 +160,32 @@
     text-transform: uppercase;
     color: var(--muted);
 }
-.summary__label svg { width: 0.875rem; height: 0.875rem; }
-.summary__value { font-size: 0.875rem; font-weight: 600; color: #f1f5f9; }
+.summary__label svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
+.summary__value { font-size: 0.875rem; font-weight: 600; color: #f1f5f9; overflow-wrap: anywhere; }
 .summary__value--mono { font-family: var(--font-mono); letter-spacing: -0.025em; }
-.summary__value--truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.75rem; font-weight: 500; color: var(--text-soft); }
+/* Alcance: el texto largo se ajusta dentro de la tarjeta */
+.summary__value--truncate {
+    display: block;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-soft);
+}
 .summary__sep { margin: 0 0.25rem; color: var(--muted-dark); }
 .summary__ok { font-size: 0.75rem; font-weight: 400; color: #34d399; }
 
 /* ---------- Panel + tabla ---------- */
+/* contain: inline-size hace que el panel tome siempre el ancho disponible
+   y no el ancho de la tabla. El panel es una columna: barra arriba, tabla
+   en medio (con su propio scroll) y pie abajo. */
 .panel {
+    min-width: 0;
+    max-width: 100%;
+    contain: inline-size;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 0.75rem;
@@ -147,6 +193,7 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 }
 .panel__bar {
+    flex: none;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -161,8 +208,21 @@
 .panel__count { padding: 0.125rem 0.5rem; border-radius: 9999px; background: #132742; color: var(--text-soft); font-size: 11px; font-weight: 500; }
 .panel__meta { font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
 
-.table-wrap { overflow-x: auto; }
-.table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.75rem; }
+/* El scroll (vertical y horizontal) vive aquí, dentro del panel */
+.table-wrap {
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #1b3d6a transparent;
+}
+.table-wrap::-webkit-scrollbar { width: 8px; height: 8px; }
+.table-wrap::-webkit-scrollbar-thumb { background: #1b3d6a; border-radius: 9999px; }
+.table-wrap::-webkit-scrollbar-track { background: transparent; }
+
+.table { width: 100%; min-width: 64rem; border-collapse: collapse; text-align: left; font-size: 0.75rem; }
 .table thead tr {
     background: var(--input-bg);
     border-bottom: 1px solid var(--divider);
@@ -172,6 +232,14 @@
     text-transform: uppercase;
 }
 .table th { padding: 0.5rem 0.75rem; font-weight: 600; white-space: nowrap; }
+/* Encabezado fijo mientras se desplazan las filas */
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--input-bg);
+    box-shadow: 0 1px 0 var(--divider);
+}
 .table tbody tr { border-bottom: 1px solid var(--row-divider); color: var(--text-soft); transition: background .15s; }
 .table tbody tr:hover { background: rgba(12, 34, 60, .6); }
 .table tbody tr.row--pending { background: rgba(5, 19, 36, .5); }
@@ -236,16 +304,18 @@
     border: 1px solid;
     border-radius: 9999px;
     font-size: 11px;
+    white-space: nowrap;
 }
 .decision--pendiente { border-color: #475569; background: rgba(30, 41, 59, .6); color: var(--muted); }
 .decision--revision  { border-color: rgba(245, 158, 11, .4); background: rgba(245, 158, 11, .1); color: #fcd34d; font-weight: 500; }
 
-.row-link { color: var(--blue-400); font-weight: 500; transition: color .15s; }
+.row-link { color: var(--blue-400); font-weight: 500; white-space: nowrap; transition: color .15s; }
 .row-link:hover { color: var(--blue-300); text-decoration: underline; text-underline-offset: 2px; }
 .row-muted { font-style: italic; color: var(--muted); }
 
 /* Pie de la tabla */
 .panel__foot {
+    flex: none;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -264,13 +334,14 @@
 .panel__foot-right svg { width: 0.875rem; height: 0.875rem; }
 
 /* ---------- Notas amarillas ---------- */
-.notes { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-@media (min-width: 1024px) { .notes { grid-template-columns: 7fr 5fr; } }
+.notes { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+@media (min-width: 1024px) { .notes { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
 
 .note {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
+    min-width: 0;
     padding: 1rem;
     border: 1px solid rgba(234, 179, 8, .3);
     border-left: 4px solid #facc15;
@@ -297,4 +368,5 @@
 .decision--escalar_a_cumplimiento { border-color: rgba(244, 63, 94, .4); background: rgba(244, 63, 94, .1); color: #fda4af; font-weight: 500; }
 .decision--descartar              { border-color: rgba(16, 185, 129, .4); background: rgba(16, 185, 129, .1); color: #6ee7b7; font-weight: 500; }
 .decision--plan_de_accion         { border-color: rgba(59, 130, 246, .4); background: rgba(59, 130, 246, .1); color: #93c5fd; font-weight: 500; }
+ /**/
  
