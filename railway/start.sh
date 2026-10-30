@@ -10,4 +10,13 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 chown -R www-data:www-data storage bootstrap/cache
+
+for mpm in mpm_event mpm_worker; do
+  a2dismod "$mpm" >/dev/null 2>&1 || true
+  rm -f "/etc/apache2/mods-enabled/${mpm}.load" \
+        "/etc/apache2/mods-enabled/${mpm}.conf"
+done
+a2enmod mpm_prefork
+apache2ctl -t
+
 exec apache2-foreground
