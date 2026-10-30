@@ -9,19 +9,20 @@
     // Columnas de la matriz (mismo orden que los permisos de abajo)
     $columnasRol = ['Analista', 'Supervisor', 'Admin.', 'Auditor'];
 
-    // [función del sistema, [Analista, Supervisor, Admin., Auditor]]  1 = permitido, 0 = no
+      // [función del sistema, [Analista, Supervisor, Admin., Auditor]]  1 = permitido, 0 = no
     $permisos = $permisos ?? [
         ['Ver tablero y resultados',                         [1, 1, 1, 1]],
-        ['Registrar eventos y calificar factores',           [1, 0, 0, 0]],
-        ['Registrar decisión y plan de acción',              [1, 1, 0, 0]],
+        ['Registrar, calificar y calcular eventos',          [1, 1, 0, 0]],
+        ['Registrar decisión y plan de acción',              [0, 1, 0, 0]],
         ['Gestionar clientes y coincidencias',               [1, 1, 0, 0]],
-        ['Análisis de sensibilidad',                         [0, 1, 1, 1]],
+        ['Análisis de sensibilidad',                         [1, 1, 1, 1]],
         ['Editar catálogos y borradores de parámetros',      [0, 0, 1, 0]],
         ['Proponer versión de parámetros',                   [0, 0, 1, 0]],
-        ['Aprobar o rechazar versión (por confirmar)',       [0, 1, 0, 1]],
-        ['Ver bitácora y verificar integridad',              [0, 1, 0, 1]],
+        ['Aprobar o rechazar versión',                       [0, 1, 0, 0]],
+        ['Ver bitácora y verificar integridad',              [1, 1, 1, 1]],
         ['Gestionar usuarios y roles',                       [0, 0, 1, 0]],
     ];
+    
 @endphp
 
 @section('title', 'Usuarios y roles · Matriz LA/FT')
@@ -231,4 +232,3 @@
 @push('scripts')
     <script src="{{ asset('js/usuarios.js') }}"></script>
 @endpush
- 
