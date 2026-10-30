@@ -9,7 +9,9 @@ RUN npm run build
 FROM php:8.3-apache-bookworm
 RUN apt-get update && apt-get install -y --no-install-recommends libonig-dev libxml2-dev libzip-dev unzip \
     && docker-php-ext-install pdo_mysql mbstring bcmath zip opcache dom \
-    && a2enmod rewrite remoteip \
+    && (a2dismod mpm_event 2>/dev/null || true) \
+    && (a2dismod mpm_worker 2>/dev/null || true) \
+    && a2enmod mpm_prefork rewrite remoteip \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 WORKDIR /var/www/html
