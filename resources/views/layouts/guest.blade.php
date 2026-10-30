@@ -28,11 +28,11 @@
     <header class="topbar">
         <div class="topbar__brand">
             <span class="topbar__dot"></span>
-            <span class="topbar__title">Sistema de Cumplimiento Regulatorio &amp; Riesgo Financiero</span>
+            <span class="topbar__title">Proyecto del curso de Seguridad &amp; Auditoria de Sistemas</span>
         </div>
         <div class="topbar__meta">
-            <span class="topbar__badge">ENTORNO PRIVADO SEGURO</span>
-            <span>ISO/IEC 27001</span>
+            <span class="topbar__badge">ENTORNO SEGURO</span>
+            <span>Seccion A</span>
         </div>
     </header>
 
@@ -50,4 +50,3 @@
     @stack('scripts')
 </body>
 </html>
- 

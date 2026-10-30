@@ -54,48 +54,34 @@ document.addEventListener('DOMContentLoaded', function () {
         sync();
     });
 
-    /* ---------- Calcular resultado: promedio ponderado (dato faltante = nivel 3) ---------- */
-    function calcular() {
-        var total = 0;
-        rows.forEach(function (row) {
-            var peso   = parseFloat(row.getAttribute('data-peso')) || 0;
-            var marca  = row.querySelector('input[type="radio"]:checked');
-            var falta  = row.querySelector('[data-falta]');
-            var nivel  = (!marca || (falta && falta.checked)) ? 3 : parseFloat(marca.value);
-            total += (peso * nivel) / 100;
-        });
-        return total;
-    }
-
-    function resetCalculo() {
-        if (!btnCalcular) return;
-        btnCalcular.classList.remove('is-done');
-        if (btnLabel) btnLabel.textContent = labelInicial;
-    }
-
-    if (btnCalcular) {
-        btnCalcular.addEventListener('click', function () {
-            btnCalcular.disabled = true;
-            if (btnLabel) btnLabel.textContent = 'Procesando...';
-
-            setTimeout(function () {
-                btnCalcular.disabled = false;
-                btnCalcular.classList.add('is-done');
-                if (btnLabel) btnLabel.textContent = 'Calculado: ' + calcular().toFixed(2) + ' / 5.00';
-            }, 500);
-        });
-    }
-
-    form.addEventListener('change', function () {
-        updateResumen();
-        resetCalculo();
-    });
+    form.addEventListener('change', updateResumen);
     updateResumen();
 
     /* ---------- Envío ---------- */
-    // Mientras no exista la ruta calificaciones.store el formulario apunta a "#" y no envía nada (prototipo).
+    // "Guardar calificaciones" y "Calcular resultado" envían este mismo formulario (accion=guardar / accion=calcular).
+    // El cálculo real lo hace el servidor con el procedimiento sp_calcular_resultado.
+    // Sin la ruta calificaciones.store el formulario apunta a "#" y no envía nada.
     form.addEventListener('submit', function (e) {
-        if (form.getAttribute('action') === '#') e.preventDefault();
+        if (form.getAttribute('action') === '#') {
+            e.preventDefault();
+            return;
+        }
+
+        var enviador = e.submitter;
+        if (!enviador) return;
+
+        if (enviador === btnCalcular && btnLabel) btnLabel.textContent = 'Calculando...';
+
+        // Se desactiva después de armar el envío (un botón desactivado antes no manda su valor) para evitar un doble clic
+        setTimeout(function () { enviador.disabled = true; }, 0);
+    });
+
+    // Al volver con el botón "Atrás" los botones deben quedar activos otra vez
+    window.addEventListener('pageshow', function (e) {
+        if (!e.persisted) return;
+        form.querySelectorAll('button[type="submit"]').forEach(function (b) { b.disabled = false; });
+        if (btnCalcular) btnCalcular.disabled = false;
+        if (btnLabel) btnLabel.textContent = labelInicial;
     });
 });
  
